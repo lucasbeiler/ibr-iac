@@ -1,50 +1,440 @@
-resource "aws_security_group" "allow_all" {
-  name        = "allow_everything"
-  description = "Allow all traffic."
-  # vpc_id      = aws_vpc.main.id
+module "spot_us_east_1" {
+  source = "./modules/ec2"
 
-  ingress {
-    from_port        = 0    # 0 (semantically equivalent to all)
-    to_port          = 0    # 0 (semantically equivalent to all)
-    protocol         = "-1" # "-1" (semantically equivalent to all)
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
+  iam_instance_profile = local.iam_instance_profile
+  user_data            = local.user_data
+  spot_price           = local.spot_price
+  instance_type        = local.instance_type
+  ami                  = local.ami
+  volume_size_gb       = local.volume_size_gb
+  ssh_keypair_name     = local.key_name
+  ssh_public_key       = tls_private_key.private_key.public_key_openssh
+
+  providers = {
+    aws = aws
   }
-
-  egress {
-    from_port        = 0    # 0 (semantically equivalent to all)
-    to_port          = 0    # 0 (semantically equivalent to all)
-    protocol         = "-1" # "-1" (semantically equivalent to all)
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-
 }
 
-resource "aws_spot_instance_request" "instances" {
-  ami = "ami-08e61ba43f1e1d9a3" # Alpine Linux
-  # ami = "ami-02396cdd13e9a1257" # Amazon Linux 2023
-  # provider      = aws.eua
-  spot_price    = "0.03"
-  instance_type = "t3.nano"
-  key_name      = aws_key_pair.generated_key.key_name
+module "spot_af_south_1" {
+  source = "./modules/ec2"
 
-  user_data = templatefile("startup_script.sh",  { S3_NAME = aws_s3_bucket.ibr_bucket.id, S3_REGION = aws_s3_bucket.ibr_bucket.region })
+  iam_instance_profile = local.iam_instance_profile
+  user_data            = local.user_data
+  spot_price           = local.spot_price
+  instance_type        = local.instance_type
+  ami                  = local.ami
+  volume_size_gb       = local.volume_size_gb
+  ssh_keypair_name     = local.key_name
+  ssh_public_key       = tls_private_key.private_key.public_key_openssh
 
-  root_block_device {
-    volume_size = "8" # disk space (GB)
+  providers = {
+    aws = aws.af-south-1
   }
-
-  iam_instance_profile   = aws_iam_instance_profile.instance_profile.id
-  vpc_security_group_ids = [aws_security_group.allow_all.id]
 }
+module "spot_ap_east_1" {
+  source = "./modules/ec2"
+
+  iam_instance_profile = local.iam_instance_profile
+  user_data            = local.user_data
+  spot_price           = local.spot_price
+  instance_type        = local.instance_type
+  ami                  = local.ami
+  volume_size_gb       = local.volume_size_gb
+  ssh_keypair_name     = local.key_name
+  ssh_public_key       = tls_private_key.private_key.public_key_openssh
+
+  providers = {
+    aws = aws.ap-east-1
+  }
+}
+module "spot_ap_northeast_1" {
+  source = "./modules/ec2"
+
+  iam_instance_profile = local.iam_instance_profile
+  user_data            = local.user_data
+  spot_price           = local.spot_price
+  instance_type        = local.instance_type
+  ami                  = local.ami
+  volume_size_gb       = local.volume_size_gb
+  ssh_keypair_name     = local.key_name
+  ssh_public_key       = tls_private_key.private_key.public_key_openssh
+
+  providers = {
+    aws = aws.ap-northeast-1
+  }
+}
+module "spot_ap_northeast_2" {
+  source = "./modules/ec2"
+
+  iam_instance_profile = local.iam_instance_profile
+  user_data            = local.user_data
+  spot_price           = local.spot_price
+  instance_type        = local.instance_type
+  ami                  = local.ami
+  volume_size_gb       = local.volume_size_gb
+  ssh_keypair_name     = local.key_name
+  ssh_public_key       = tls_private_key.private_key.public_key_openssh
+
+  providers = {
+    aws = aws.ap-northeast-2
+  }
+}
+module "spot_ap_northeast_3" {
+  source = "./modules/ec2"
+
+  iam_instance_profile = local.iam_instance_profile
+  user_data            = local.user_data
+  spot_price           = local.spot_price
+  instance_type        = local.instance_type
+  ami                  = local.ami
+  volume_size_gb       = local.volume_size_gb
+  ssh_keypair_name     = local.key_name
+  ssh_public_key       = tls_private_key.private_key.public_key_openssh
+
+  providers = {
+    aws = aws.ap-northeast-3
+  }
+}
+module "spot_ap_south_1" {
+  source = "./modules/ec2"
+
+  iam_instance_profile = local.iam_instance_profile
+  user_data            = local.user_data
+  spot_price           = local.spot_price
+  instance_type        = local.instance_type
+  ami                  = local.ami
+  volume_size_gb       = local.volume_size_gb
+  ssh_keypair_name     = local.key_name
+  ssh_public_key       = tls_private_key.private_key.public_key_openssh
+
+  providers = {
+    aws = aws.ap-south-1
+  }
+}
+module "spot_ap_south_2" {
+  source = "./modules/ec2"
+
+  iam_instance_profile = local.iam_instance_profile
+  user_data            = local.user_data
+  spot_price           = local.spot_price
+  instance_type        = local.instance_type
+  ami                  = local.ami
+  volume_size_gb       = local.volume_size_gb
+  ssh_keypair_name     = local.key_name
+  ssh_public_key       = tls_private_key.private_key.public_key_openssh
+
+  providers = {
+    aws = aws.ap-south-2
+  }
+}
+module "spot_ap_southeast_1" {
+  source = "./modules/ec2"
+
+  iam_instance_profile = local.iam_instance_profile
+  user_data            = local.user_data
+  spot_price           = local.spot_price
+  instance_type        = local.instance_type
+  ami                  = local.ami
+  volume_size_gb       = local.volume_size_gb
+  ssh_keypair_name     = local.key_name
+  ssh_public_key       = tls_private_key.private_key.public_key_openssh
+
+  providers = {
+    aws = aws.ap-southeast-1
+  }
+}
+module "spot_ap_southeast_2" {
+  source = "./modules/ec2"
+
+  iam_instance_profile = local.iam_instance_profile
+  user_data            = local.user_data
+  spot_price           = local.spot_price
+  instance_type        = local.instance_type
+  ami                  = local.ami
+  volume_size_gb       = local.volume_size_gb
+  ssh_keypair_name     = local.key_name
+  ssh_public_key       = tls_private_key.private_key.public_key_openssh
+
+  providers = {
+    aws = aws.ap-southeast-2
+  }
+}
+module "spot_ap_southeast_3" {
+  source = "./modules/ec2"
+
+  iam_instance_profile = local.iam_instance_profile
+  user_data            = local.user_data
+  spot_price           = local.spot_price
+  instance_type        = local.instance_type
+  ami                  = local.ami
+  volume_size_gb       = local.volume_size_gb
+  ssh_keypair_name     = local.key_name
+  ssh_public_key       = tls_private_key.private_key.public_key_openssh
+
+  providers = {
+    aws = aws.ap-southeast-3
+  }
+}
+# module "spot_ap_southeast_4" {
+#   source = "./modules/ec2"
+
+#   iam_instance_profile = local.iam_instance_profile
+#   user_data            = local.user_data
+#   spot_price           = local.spot_price
+#   instance_type        = local.instance_type
+#   ami                  = local.ami
+#   volume_size_gb       = local.volume_size_gb
+#   ssh_keypair_name     = local.key_name
+#   ssh_public_key       = tls_private_key.private_key.public_key_openssh
+
+#   providers = {
+#     aws = aws.ap-southeast-4
+#   }
+# }
+module "spot_ca_central_1" {
+  source = "./modules/ec2"
+
+  iam_instance_profile = local.iam_instance_profile
+  user_data            = local.user_data
+  spot_price           = local.spot_price
+  instance_type        = local.instance_type
+  ami                  = local.ami
+  volume_size_gb       = local.volume_size_gb
+  ssh_keypair_name     = local.key_name
+  ssh_public_key       = tls_private_key.private_key.public_key_openssh
+
+  providers = {
+    aws = aws.ca-central-1
+  }
+}
+module "spot_eu_central_1" {
+  source = "./modules/ec2"
+
+  iam_instance_profile = local.iam_instance_profile
+  user_data            = local.user_data
+  spot_price           = local.spot_price
+  instance_type        = local.instance_type
+  ami                  = local.ami
+  volume_size_gb       = local.volume_size_gb
+  ssh_keypair_name     = local.key_name
+  ssh_public_key       = tls_private_key.private_key.public_key_openssh
+
+  providers = {
+    aws = aws.eu-central-1
+  }
+}
+module "spot_eu_central_2" {
+  source = "./modules/ec2"
+
+  iam_instance_profile = local.iam_instance_profile
+  user_data            = local.user_data
+  spot_price           = local.spot_price
+  instance_type        = local.instance_type
+  ami                  = local.ami
+  volume_size_gb       = local.volume_size_gb
+  ssh_keypair_name     = local.key_name
+  ssh_public_key       = tls_private_key.private_key.public_key_openssh
+
+  providers = {
+    aws = aws.eu-central-2
+  }
+}
+module "spot_eu_north_1" {
+  source = "./modules/ec2"
+
+  iam_instance_profile = local.iam_instance_profile
+  user_data            = local.user_data
+  spot_price           = local.spot_price
+  instance_type        = local.instance_type
+  ami                  = local.ami
+  volume_size_gb       = local.volume_size_gb
+  ssh_keypair_name     = local.key_name
+  ssh_public_key       = tls_private_key.private_key.public_key_openssh
+
+  providers = {
+    aws = aws.eu-north-1
+  }
+}
+module "spot_eu_south_1" {
+  source = "./modules/ec2"
+
+  iam_instance_profile = local.iam_instance_profile
+  user_data            = local.user_data
+  spot_price           = local.spot_price
+  instance_type        = local.instance_type
+  ami                  = local.ami
+  volume_size_gb       = local.volume_size_gb
+  ssh_keypair_name     = local.key_name
+  ssh_public_key       = tls_private_key.private_key.public_key_openssh
+
+  providers = {
+    aws = aws.eu-south-1
+  }
+}
+module "spot_eu_south_2" {
+  source = "./modules/ec2"
+
+  iam_instance_profile = local.iam_instance_profile
+  user_data            = local.user_data
+  spot_price           = local.spot_price
+  instance_type        = local.instance_type
+  ami                  = local.ami
+  volume_size_gb       = local.volume_size_gb
+  ssh_keypair_name     = local.key_name
+  ssh_public_key       = tls_private_key.private_key.public_key_openssh
+
+  providers = {
+    aws = aws.eu-south-2
+  }
+}
+module "spot_eu_west_1" {
+  source = "./modules/ec2"
+
+  iam_instance_profile = local.iam_instance_profile
+  user_data            = local.user_data
+  spot_price           = local.spot_price
+  instance_type        = local.instance_type
+  ami                  = local.ami
+  volume_size_gb       = local.volume_size_gb
+  ssh_keypair_name     = local.key_name
+  ssh_public_key       = tls_private_key.private_key.public_key_openssh
+
+  providers = {
+    aws = aws.eu-west-1
+  }
+}
+module "spot_eu_west_2" {
+  source = "./modules/ec2"
+
+  iam_instance_profile = local.iam_instance_profile
+  user_data            = local.user_data
+  spot_price           = local.spot_price
+  instance_type        = local.instance_type
+  ami                  = local.ami
+  volume_size_gb       = local.volume_size_gb
+  ssh_keypair_name     = local.key_name
+  ssh_public_key       = tls_private_key.private_key.public_key_openssh
+
+  providers = {
+    aws = aws.eu-west-2
+  }
+}
+module "spot_eu_west_3" {
+  source = "./modules/ec2"
+
+  iam_instance_profile = local.iam_instance_profile
+  user_data            = local.user_data
+  spot_price           = local.spot_price
+  instance_type        = local.instance_type
+  ami                  = local.ami
+  volume_size_gb       = local.volume_size_gb
+  ssh_keypair_name     = local.key_name
+  ssh_public_key       = tls_private_key.private_key.public_key_openssh
+
+  providers = {
+    aws = aws.eu-west-3
+  }
+}
+module "spot_me_central_1" {
+  source = "./modules/ec2"
+
+  iam_instance_profile = local.iam_instance_profile
+  user_data            = local.user_data
+  spot_price           = local.spot_price
+  instance_type        = local.instance_type
+  ami                  = local.ami
+  volume_size_gb       = local.volume_size_gb
+  ssh_keypair_name     = local.key_name
+  ssh_public_key       = tls_private_key.private_key.public_key_openssh
+
+  providers = {
+    aws = aws.me-central-1
+  }
+}
+module "spot_me_south_1" {
+  source = "./modules/ec2"
+
+  iam_instance_profile = local.iam_instance_profile
+  user_data            = local.user_data
+  spot_price           = local.spot_price
+  instance_type        = local.instance_type
+  ami                  = local.ami
+  volume_size_gb       = local.volume_size_gb
+  ssh_keypair_name     = local.key_name
+  ssh_public_key       = tls_private_key.private_key.public_key_openssh
+
+  providers = {
+    aws = aws.me-south-1
+  }
+}
+module "spot_sa_east_1" {
+  source = "./modules/ec2"
+
+  iam_instance_profile = local.iam_instance_profile
+  user_data            = local.user_data
+  spot_price           = local.spot_price
+  instance_type        = local.instance_type
+  ami                  = local.ami
+  volume_size_gb       = local.volume_size_gb
+  ssh_keypair_name     = local.key_name
+  ssh_public_key       = tls_private_key.private_key.public_key_openssh
+
+  providers = {
+    aws = aws.sa-east-1
+  }
+}
+
+module "spot_us_east_2" {
+  source = "./modules/ec2"
+
+  iam_instance_profile = local.iam_instance_profile
+  user_data            = local.user_data
+  spot_price           = local.spot_price
+  instance_type        = local.instance_type
+  ami                  = local.ami
+  volume_size_gb       = local.volume_size_gb
+  ssh_keypair_name     = local.key_name
+  ssh_public_key       = tls_private_key.private_key.public_key_openssh
+
+  providers = {
+    aws = aws.us-east-2
+  }
+}
+module "spot_us_west_1" {
+  source = "./modules/ec2"
+
+  iam_instance_profile = local.iam_instance_profile
+  user_data            = local.user_data
+  spot_price           = local.spot_price
+  instance_type        = local.instance_type
+  ami                  = local.ami
+  volume_size_gb       = local.volume_size_gb
+  ssh_keypair_name     = local.key_name
+  ssh_public_key       = tls_private_key.private_key.public_key_openssh
+
+  providers = {
+    aws = aws.us-west-1
+  }
+}
+module "spot_us_west_2" {
+  source = "./modules/ec2"
+
+  iam_instance_profile = local.iam_instance_profile
+  user_data            = local.user_data
+  spot_price           = local.spot_price
+  instance_type        = local.instance_type
+  ami                  = local.ami
+  volume_size_gb       = local.volume_size_gb
+  ssh_keypair_name     = local.key_name
+  ssh_public_key       = tls_private_key.private_key.public_key_openssh
+
+  providers = {
+    aws = aws.us-west-2
+  }
+}
+
 
 resource "tls_private_key" "private_key" {
   algorithm = "RSA"
   rsa_bits  = 4096
-}
-
-resource "aws_key_pair" "generated_key" {
-  key_name   = var.KEY_NAME
-  public_key = tls_private_key.private_key.public_key_openssh
 }
