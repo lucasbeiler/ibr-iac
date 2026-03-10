@@ -1,6 +1,7 @@
 resource "aws_security_group" "allow_all" {
   name        = "allow_everything"
   description = "Allow all traffic."
+  region      = var.region
   # vpc_id      = aws_vpc.main.id
 
   ingress {
@@ -22,7 +23,8 @@ resource "aws_security_group" "allow_all" {
 }
 
 resource "aws_ec2_fleet" "instances" {
-  valid_until = "2024-06-06T00:00:00Z"
+  valid_until = var.fleet_valid_until
+  region      = var.region
   launch_template_config {
     launch_template_specification {
       launch_template_id = aws_launch_template.instances.id
@@ -32,7 +34,7 @@ resource "aws_ec2_fleet" "instances" {
 
   target_capacity_specification {
     default_target_capacity_type = "spot"
-    total_target_capacity        = 5
+    total_target_capacity        = var.instance_count
   }
 
   replace_unhealthy_instances = true
@@ -44,6 +46,7 @@ resource "aws_launch_template" "instances" {
   instance_type = var.instance_type
   key_name      = var.ssh_keypair_name
   user_data     = var.user_data
+  region        = var.region
 
   block_device_mappings {
     device_name = "/dev/xvda"
@@ -63,4 +66,5 @@ resource "aws_launch_template" "instances" {
 resource "aws_key_pair" "generated_key" {
   key_name   = var.ssh_keypair_name
   public_key = var.ssh_public_key # tls_private_key.private_key.public_key_openssh
+  region     = var.region
 }

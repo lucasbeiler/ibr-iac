@@ -1,9 +1,7 @@
-name: Apply
+name: Destroy
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 */5 * * *'
 
 jobs:
   terraform:
@@ -23,5 +21,5 @@ jobs:
     - name: Terraform Init
       run: terraform init
 
-    - name: Terraform Apply
-      run: terraform apply -auto-approve
+    - name: Terraform destroy
+      run: terraform destroy -auto-approve

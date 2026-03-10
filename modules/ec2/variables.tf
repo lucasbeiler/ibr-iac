@@ -10,7 +10,7 @@ variable "instance_type" {
   type = string
 }
 
-variable "spot_price" {
+variable "fleet_valid_until" {
   type = string
 }
 
@@ -29,4 +29,9 @@ variable "ssh_public_key" {
 variable "instance_count" {
   type = number
   default = 1
+}
+
+variable "region" {
+  type = string
+  default = "us-east-1"
 }

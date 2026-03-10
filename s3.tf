@@ -1,9 +1,7 @@
 resource "aws_s3_bucket" "ibr_bucket" {
-  bucket        = "ibr-data-aws-3"
-  provider      = aws.eu-north-1
+  bucket        = local.ibr_bucket_name
+  region        = local.ibr_bucket_region
   force_destroy = false
-
-  # acl = "private"
 
   tags = {
     Name = "ibr-data-aws"
